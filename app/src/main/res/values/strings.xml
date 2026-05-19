@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">LaporTemu</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_report">Lapor</string>
+    <string name="title_profile">Profil</string>
+    <string name="search_hint">Cari barang...</string>
+    <string name="contact_finder">Hubungi Penemu</string>
+    <string name="title_report_form">Lapor Barang Temuan</string>
+    <string name="hint_nama_barang">Nama Barang (misal: Kunci Motor)</string>
+    <string name="hint_lokasi_barang">Lokasi Ditemukan (misal: Gedung A)</string>
+    <string name="hint_whatsapp">Nomor WhatsApp (misal: 62812...)</string>
+    <string name="btn_select_photo">Pilih Foto Barang</string>
+    <string name="btn_submit_report">Kirim Laporan</string>
+    <string name="choose_source">Pilih Sumber Foto</string>
+    <string name="source_camera">Kamera</string>
+    <string name="source_gallery">Galeri</string>
+    <string name="report_success">Laporan berhasil dikirim!</string>
+</resources>
