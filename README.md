@@ -21,7 +21,7 @@ Pengembangan aplikasi ini dilakukan secara kolaboratif oleh tim berikut:
 
 ## 🛠️ Teknologi yang Digunakan
 
-* **Platform:** Android (Java / Kotlin)
+* **Platform:** Android (Java)
 * **IDE:** Android Studio
 * **Version Control:** Git & GitHub
 
