@@ -2,14 +2,6 @@
 
 LaporTemu adalah aplikasi berbasis Android yang dirancang untuk mempermudah pelaporan dan penemuan barang hilang atau kejadian tertentu. Proyek ini dikembangkan sebagai bagian dari tugas akademik program studi Teknik Informatika, Universitas Pamulang.
 
-## 👥 Anggota Kelompok
-
-Pengembangan aplikasi ini dilakukan secara kolaboratif oleh tim berikut:
-
-* **Ardeco Sakha Agriel** - 231011402341
-* **Muhamad Aziz Mufashshal** - 231011400236
-* **Sandy Salim** - 231011402932
-
 ## 🚀 Fitur Utama
 
 *(Ubah dan sesuaikan fitur di bawah ini dengan fungsi asli LaporTemu kalian)*
