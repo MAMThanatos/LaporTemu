@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "533545347017",
+    "project_id": "laportemu-88400",
+    "storage_bucket": "laportemu-88400.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533545347017:android:7121088fe95ce5bba8ea18",
+        "android_client_info": {
+          "package_name": "id.aziz.laportemu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWnaXReDhqVLqd27PY3XZ0zj2gqDH4HHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

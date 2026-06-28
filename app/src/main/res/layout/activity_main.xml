@@ -8,6 +8,7 @@
     android:background="@color/bg_light"
     tools:context=".MainActivity">
 
+    <!-- Gradient Header Bar -->
     <LinearLayout
         android:id="@+id/app_header"
         android:layout_width="match_parent"
@@ -21,27 +22,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="16dp"
+            android:paddingTop="48dp"
+            android:paddingBottom="16dp"
             android:paddingHorizontal="20dp"
             android:gravity="center_vertical"
-            android:background="@color/white">
+            android:background="@drawable/bg_header_gradient">
 
-            <TextView
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_logolp"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="12dp" />
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/app_name"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-black"
-                android:textColor="@color/primary"
-                android:gravity="center" />
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/border_color" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LaporTemu"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/white"
+                    android:letterSpacing="0.03" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lapor Barang Hilang &amp; Temu"
+                    android:textSize="11sp"
+                    android:textColor="#CCFFFFFF"
+                    android:layout_marginTop="1dp" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
@@ -58,13 +77,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:elevation="8dp"
+        android:elevation="16dp"
         android:background="@drawable/bg_bottom_nav"
         app:itemActiveIndicatorStyle="@null"
         app:itemIconTint="@color/nav_item_color"
         app:itemTextColor="@color/nav_item_color"
-        app:itemRippleColor="@color/secondary"
-        app:labelVisibilityMode="selected"
+        app:itemRippleColor="@color/primary_ultra_light"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

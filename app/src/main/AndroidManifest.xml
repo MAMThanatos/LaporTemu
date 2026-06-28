@@ -23,6 +23,19 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="true" />
+            
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LaporTemu" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".RegisterActivity"
             android:exported="false" />
 
         <activity
