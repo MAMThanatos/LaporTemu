@@ -398,3 +398,14 @@ org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequ
 2026.06.28 12:45:19 INFO  Started: Metals version 1.6.7 in folders 'C:\Users\Aziz\AndroidStudioProjects\LaporTemu' for client Antigravity IDE 1.107.0.
 2026.06.28 12:45:19 INFO  Memory monitor started
 2026.06.28 12:45:20 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.06.28 12:47:43 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\LoginActivity.java. Using fallback presentation compiler.
+2026.06.28 12:48:02 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\RegisterActivity.java. Using fallback presentation compiler.
+2026.06.28 12:48:20 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\SplashActivity.java. Using fallback presentation compiler.
+2026.06.28 12:48:31 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\ProfileFragment.java. Using fallback presentation compiler.
+2026.06.28 12:51:29 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\LoginActivity.java. Using fallback presentation compiler.
+2026.06.28 12:51:29 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\RegisterActivity.java. Using fallback presentation compiler.
+2026.06.28 12:51:29 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\SplashActivity.java. Using fallback presentation compiler.
+2026.06.28 13:35:29 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 13:35:42 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\ProfileFragment.java. Using fallback presentation compiler.
+Jun 28, 2026 1:37:39 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
