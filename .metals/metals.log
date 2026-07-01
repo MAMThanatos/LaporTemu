@@ -474,3 +474,4 @@ WARNING: Unmatched cancel notification for request id 8
 2026.07.01 19:34:28 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
 Jul 01, 2026 7:34:32 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2026.07.01 19:35:51 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
