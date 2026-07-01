@@ -3,28 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_header_gradient">
-
-    <!-- Decorative circles -->
-    <View
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:background="@drawable/bg_circle_translucent"
-        android:alpha="0.3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="-100dp"
-        android:layout_marginEnd="-100dp" />
-
-    <View
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/bg_circle_translucent"
-        android:alpha="0.2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="-60dp"
-        android:layout_marginStart="-60dp" />
+    android:background="@color/bg_light"> <!-- Light, clean background -->
 
     <!-- Logo Container -->
     <LinearLayout
@@ -38,13 +17,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Logo image circle bg -->
-        <FrameLayout
+        <!-- Circular Logo Wrapper -->
+        <androidx.cardview.widget.CardView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:background="@drawable/bg_circle_translucent"
-            android:padding="16dp"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="60dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/white">
 
             <ImageView
                 android:id="@+id/logo_splash"
@@ -52,13 +32,13 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_laportemu"
                 android:scaleType="centerCrop" />
-        </FrameLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="LaporTemu"
-            android:textColor="@color/white"
+            android:textColor="@color/primary_dark"
             android:textSize="34sp"
             android:textStyle="bold"
             android:fontFamily="sans-serif-black"
@@ -68,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lapor &amp; Temukan Barangmu"
-            android:textColor="#CCFFFFFF"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:layout_marginTop="8dp" />
 
@@ -79,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Versi 1.0.0"
-        android:textColor="#80FFFFFF"
+        android:textColor="@color/text_muted"
         android:textSize="12sp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"

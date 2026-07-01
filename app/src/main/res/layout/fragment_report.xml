@@ -115,15 +115,32 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Nama Barang -->
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- === NAMA BARANG + MIC === -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nama Barang"
-                    android:textColor="@color/text_secondary"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="6dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nama Barang"
+                        android:textColor="@color/text_secondary"
+                        android:textStyle="bold"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:id="@+id/btn_mic_nama"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@android:drawable/ic_btn_speak_now"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Ucapkan nama barang"
+                        android:padding="4dp" />
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -142,15 +159,32 @@
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Lokasi -->
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- === LOKASI + MIC === -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lokasi Kejadian"
-                    android:textColor="@color/text_secondary"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="6dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Lokasi Kejadian"
+                        android:textColor="@color/text_secondary"
+                        android:textStyle="bold"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:id="@+id/btn_mic_lokasi"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@android:drawable/ic_btn_speak_now"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Ucapkan lokasi"
+                        android:padding="4dp" />
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -168,15 +202,32 @@
                         android:hint="Contoh: Perpustakaan Lantai 2" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Deskripsi -->
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- === DESKRIPSI + MIC === -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Deskripsi / Ciri-ciri"
-                    android:textColor="@color/text_secondary"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="6dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Deskripsi / Ciri-ciri"
+                        android:textColor="@color/text_secondary"
+                        android:textStyle="bold"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:id="@+id/btn_mic_deskripsi"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@android:drawable/ic_btn_speak_now"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Ucapkan deskripsi"
+                        android:padding="4dp" />
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -197,15 +248,32 @@
                         android:gravity="top" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Nomor WhatsApp -->
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- === NOMOR WHATSAPP + MIC === -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nomor WhatsApp"
-                    android:textColor="@color/text_secondary"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="6dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nomor WhatsApp"
+                        android:textColor="@color/text_secondary"
+                        android:textStyle="bold"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:id="@+id/btn_mic_wa"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@android:drawable/ic_btn_speak_now"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Ucapkan nomor WA"
+                        android:padding="4dp" />
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"

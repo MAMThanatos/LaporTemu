@@ -40,7 +40,7 @@ public class BarangAdapter extends RecyclerView.Adapter<BarangAdapter.BarangView
         Barang barang = barangList.get(position);
         holder.tvNama.setText(barang.getNama());
         holder.tvLokasi.setText(barang.getLokasi());
-        holder.tvWaktu.setText(barang.getWaktu());
+        holder.tvWaktu.setText(barang.getRelativeTime());
         holder.tvStatus.setText(barang.getStatus());
 
         if (barang.getImageUriString() != null) {
