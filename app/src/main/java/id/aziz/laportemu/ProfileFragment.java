@@ -71,46 +71,43 @@ public class ProfileFragment extends Fragment {
         String email = currentUser.getEmail();
         tvEmail.setText("Surel: " + email);
 
-        // Fetch user data from Firestore
+        // Load photo from local storage (no Firebase Storage needed)
+        String localPhotoUri = EditProfileActivity.getLocalPhotoUri(getContext(), uid);
+        if (localPhotoUri != null && !localPhotoUri.isEmpty() && getActivity() != null) {
+            ivProfileImage.setVisibility(View.VISIBLE);
+            tvInitial.setVisibility(View.GONE);
+            Glide.with(getActivity()).load(localPhotoUri).circleCrop().into(ivProfileImage);
+        } else {
+            ivProfileImage.setVisibility(View.GONE);
+            tvInitial.setVisibility(View.VISIBLE);
+        }
+
+        // Fetch nama & NIM from Firestore
         db.collection("users").document(uid).get()
                 .addOnCompleteListener(task -> {
-                    if (isAdded()) { // Check if fragment is attached
+                    if (isAdded()) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 String nama = document.getString("nama");
                                 String nim = document.getString("nim");
-                                String photoUrl = document.getString("photoUrl");
 
                                 tvName.setText(nama != null && !nama.isEmpty() ? nama : "Pengguna");
                                 tvNim.setText(nim != null && !nim.isEmpty() ? "NIM: " + nim : "NIM: Tidak diatur");
 
-                                if (photoUrl != null && !photoUrl.isEmpty()) {
-                                    ivProfileImage.setVisibility(View.VISIBLE);
-                                    tvInitial.setVisibility(View.GONE);
-                                    if (getActivity() != null) {
-                                        Glide.with(getActivity()).load(photoUrl).into(ivProfileImage);
-                                    }
-                                } else {
-                                    ivProfileImage.setVisibility(View.GONE);
-                                    tvInitial.setVisibility(View.VISIBLE);
-                                    if (nama != null && !nama.isEmpty()) {
-                                        String initial = nama.substring(0, 1).toUpperCase();
-                                        tvInitial.setText(initial);
-                                    } else {
-                                        tvInitial.setText("P");
-                                    }
+                                // Update initial if no photo
+                                if (localPhotoUri == null || localPhotoUri.isEmpty()) {
+                                    tvInitial.setText(nama != null && !nama.isEmpty()
+                                            ? nama.substring(0, 1).toUpperCase() : "P");
                                 }
                             } else {
                                 tvName.setText("Pengguna");
                                 tvNim.setText("NIM: Tidak diatur");
                                 tvInitial.setText("P");
-                                ivProfileImage.setVisibility(View.GONE);
-                                tvInitial.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            Toast.makeText(getContext(), "Gagal memuat profil: " + 
-                                    (task.getException() != null ? task.getException().getMessage() : "Unknown"), 
+                            Toast.makeText(getContext(), "Gagal memuat profil: " +
+                                    (task.getException() != null ? task.getException().getMessage() : "Unknown"),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

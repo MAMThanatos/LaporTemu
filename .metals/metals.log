@@ -409,3 +409,35 @@ org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequ
 2026.06.28 13:35:42 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\ProfileFragment.java. Using fallback presentation compiler.
 Jun 28, 2026 1:37:39 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2026.06.28 13:40:44 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 13:40:44 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\ProfileFragment.java. Using fallback presentation compiler.
+2026.06.28 13:49:19 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 13:52:38 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 13:53:33 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 13:53:34 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+Jun 28, 2026 1:53:34 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4
+2026.06.28 13:53:34 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 13:53:34 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 14:06:18 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 14:06:18 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 14:06:19 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 14:06:18 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 14:06:20 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.06.28 14:09:50 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\ProfileFragment.java. Using fallback presentation compiler.
+2026.06.28 18:21:01 INFO  Shutting down server
+2026.06.28 18:21:01 INFO  Memory monitor stopped
+2026.06.28 18:21:01 INFO  shutting down Metals
+2026.06.28 18:21:01 INFO  Exiting server
+2026.07.01 19:31:37 INFO  Started: Metals version 1.6.7 in folders 'C:\Users\Aziz\AndroidStudioProjects\LaporTemu' for client Antigravity IDE 1.107.0.
+2026.07.01 19:31:37 INFO  Memory monitor started
+2026.07.01 19:31:40 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.07.01 19:31:40 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.07.01 19:31:42 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.07.01 19:31:43 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.07.01 19:31:44 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.07.01 19:31:45 INFO  restarted 1 presentation compiler
+2026.07.01 19:31:47 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.07.01 19:31:47 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.
+2026.07.01 19:31:53 WARN  no build target for: C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java
+2026.07.01 19:31:53 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditProfileActivity.java. Using fallback presentation compiler.

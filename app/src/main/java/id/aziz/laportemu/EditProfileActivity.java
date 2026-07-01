@@ -1,5 +1,9 @@
 package id.aziz.laportemu;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,13 +25,17 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.firestore.SetOptions;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
+
+    private static final String PREF_NAME = "LaporTemuPrefs";
+    private static final String KEY_PROFILE_PHOTO = "profile_photo_uri_";
 
     private ImageView btnBack, ivEditProfileImage;
     private TextView tvEditInitial;
@@ -37,23 +46,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private StorageReference storageRef;
     private FirebaseUser currentUser;
 
     private Uri selectedImageUri = null;
 
-    // Launcher for selecting an image from the gallery
-    private final ActivityResultLauncher<String> pickImageLauncher = registerForActivityResult(
-            new ActivityResultContracts.GetContent(),
-            uri -> {
+    // ✅ PickVisualMedia — tidak butuh permission & tidak butuh Firebase Storage
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickImageLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                 if (uri != null) {
                     selectedImageUri = uri;
                     ivEditProfileImage.setVisibility(View.VISIBLE);
                     tvEditInitial.setVisibility(View.GONE);
-                    Glide.with(this).load(uri).into(ivEditProfileImage);
+                    Glide.with(this).load(uri).circleCrop().into(ivEditProfileImage);
                 }
-            }
-    );
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +68,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        storageRef = FirebaseStorage.getInstance().getReference();
         currentUser = mAuth.getCurrentUser();
 
         btnBack = findViewById(R.id.btn_back);
@@ -76,44 +81,41 @@ public class EditProfileActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        rlProfileImage.setOnClickListener(v -> {
-            pickImageLauncher.launch("image/*");
-        });
+        rlProfileImage.setOnClickListener(v ->
+                pickImageLauncher.launch(
+                        new PickVisualMediaRequest.Builder()
+                                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                .build()
+                )
+        );
 
         btnSaveProfile.setOnClickListener(v -> saveProfile());
-
         loadCurrentProfile();
     }
 
     private void loadCurrentProfile() {
         if (currentUser == null) return;
-        
+
+        // Load photo from local storage (SharedPreferences)
+        String savedUri = getLocalPhotoUri(currentUser.getUid());
+        if (savedUri != null && !savedUri.isEmpty()) {
+            ivEditProfileImage.setVisibility(View.VISIBLE);
+            tvEditInitial.setVisibility(View.GONE);
+            Glide.with(this).load(savedUri).circleCrop().into(ivEditProfileImage);
+        }
+
+        // Load nama & NIM from Firestore
         db.collection("users").document(currentUser.getUid()).get()
                 .addOnSuccessListener(document -> {
                     if (document.exists()) {
                         String nama = document.getString("nama");
                         String nim = document.getString("nim");
-                        String photoUrl = document.getString("photoUrl");
-
-                        if (nama != null) {
+                        if (nama != null && !nama.isEmpty()) {
                             etEditNama.setText(nama);
-                            if (!nama.isEmpty()) {
-                                tvEditInitial.setText(nama.substring(0, 1).toUpperCase());
-                            }
+                            tvEditInitial.setText(nama.substring(0, 1).toUpperCase());
                         }
-                        if (nim != null) {
-                            etEditNim.setText(nim);
-                        }
-
-                        if (photoUrl != null && !photoUrl.isEmpty()) {
-                            ivEditProfileImage.setVisibility(View.VISIBLE);
-                            tvEditInitial.setVisibility(View.GONE);
-                            Glide.with(this).load(photoUrl).into(ivEditProfileImage);
-                        }
+                        if (nim != null) etEditNim.setText(nim);
                     }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Gagal memuat profil: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -121,69 +123,54 @@ public class EditProfileActivity extends AppCompatActivity {
         String nama = etEditNama.getText().toString().trim();
         String nim = etEditNim.getText().toString().trim();
 
-        if (TextUtils.isEmpty(nama)) {
-            etEditNama.setError("Nama wajib diisi");
-            return;
-        }
-
-        if (TextUtils.isEmpty(nim)) {
-            etEditNim.setError("NIM wajib diisi");
-            return;
-        }
+        if (TextUtils.isEmpty(nama)) { etEditNama.setError("Nama wajib diisi"); return; }
+        if (TextUtils.isEmpty(nim))  { etEditNim.setError("NIM wajib diisi"); return; }
 
         pbEditProfile.setVisibility(View.VISIBLE);
         btnSaveProfile.setEnabled(false);
 
+        // Save photo locally on device (no Firebase Storage needed)
         if (selectedImageUri != null) {
-            // Upload image first
-            StorageReference profileImageRef = storageRef.child("profile_images/" + currentUser.getUid() + ".jpg");
-            profileImageRef.putFile(selectedImageUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                            updateFirestore(nama, nim, uri.toString());
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        pbEditProfile.setVisibility(View.GONE);
-                        btnSaveProfile.setEnabled(true);
-                        Toast.makeText(this, "Gagal mengunggah foto: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
-        } else {
-            // Update without new image
-            updateFirestore(nama, nim, null);
+            savePhotoLocally(selectedImageUri, currentUser.getUid());
         }
-    }
 
-    private void updateFirestore(String nama, String nim, String newPhotoUrl) {
+        // Save nama & nim to Firestore
         Map<String, Object> updates = new HashMap<>();
         updates.put("nama", nama);
         updates.put("nim", nim);
-        if (newPhotoUrl != null) {
-            updates.put("photoUrl", newPhotoUrl);
-        }
 
         db.collection("users").document(currentUser.getUid())
-                .update(updates)
+                .set(updates, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     pbEditProfile.setVisibility(View.GONE);
                     btnSaveProfile.setEnabled(true);
-                    Toast.makeText(this, "Profil berhasil diperbarui", Toast.LENGTH_SHORT).show();
-                    finish(); // Go back to profile fragment
+                    Toast.makeText(this, "✅ Profil berhasil disimpan!", Toast.LENGTH_SHORT).show();
+                    finish();
                 })
                 .addOnFailureListener(e -> {
-                    // Try to set() if update() fails because document doesn't exist
-                    db.collection("users").document(currentUser.getUid()).set(updates)
-                            .addOnSuccessListener(aVoid -> {
-                                pbEditProfile.setVisibility(View.GONE);
-                                btnSaveProfile.setEnabled(true);
-                                Toast.makeText(this, "Profil berhasil disimpan", Toast.LENGTH_SHORT).show();
-                                finish();
-                            })
-                            .addOnFailureListener(e2 -> {
-                                pbEditProfile.setVisibility(View.GONE);
-                                btnSaveProfile.setEnabled(true);
-                                Toast.makeText(this, "Gagal memperbarui profil: " + e2.getMessage(), Toast.LENGTH_LONG).show();
-                            });
+                    pbEditProfile.setVisibility(View.GONE);
+                    btnSaveProfile.setEnabled(true);
+                    Toast.makeText(this, "Gagal menyimpan: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
+    }
+
+    /**
+     * Save selected image URI to SharedPreferences (local, no cloud needed)
+     */
+    private void savePhotoLocally(Uri uri, String uid) {
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putString(KEY_PROFILE_PHOTO + uid, uri.toString()).apply();
+    }
+
+    /**
+     * Get locally saved photo URI string
+     */
+    public static String getLocalPhotoUri(Context context, String uid) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_PROFILE_PHOTO + uid, null);
+    }
+
+    private String getLocalPhotoUri(String uid) {
+        return getLocalPhotoUri(this, uid);
     }
 }
