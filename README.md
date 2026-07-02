@@ -6,6 +6,14 @@
 
 **LaporTemu** adalah aplikasi Android modern yang dirancang untuk membantu masyarakat atau mahasiswa melaporkan barang hilang (*Lost*) dan barang yang ditemukan (*Found*). Dengan dukungan sinkronisasi *real-time*, pengguna dapat dengan cepat saling terhubung dan mengembalikan barang ke pemilik aslinya.
 
+## 📥 Unduh & Instal (Coba Langsung!)
+Anda tidak perlu repot-repot melakukan *build* dari Android Studio untuk mencoba aplikasi ini. 
+Silakan unduh file APK-nya dan pasang langsung di HP Android Anda:
+
+> **[👉 UNDUH LAPORTEMU.APK DI SINI](https://github.com/MAMThanatos/LaporTemu/raw/main/LaporTemu.apk)** 📱
+
+*(Pastikan Anda mengizinkan instalasi dari "Sumber tidak dikenal / Unknown sources" di pengaturan HP Anda).*
+
 ## ✨ Fitur Utama
 * **Pelaporan Real-time**: Didukung oleh Firebase Cloud Firestore, semua laporan barang hilang maupun ditemukan akan muncul secara instan di layar pengguna lain tanpa perlu memuat ulang (*refresh*) halaman.
 * **Keamanan & Kepemilikan**: Setiap laporan dikunci dengan *User ID*. Pengguna hanya dapat mengedit dan menghapus laporan yang mereka buat sendiri.
