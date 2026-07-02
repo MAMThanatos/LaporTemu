@@ -1,26 +1,45 @@
 # LaporTemu 🔍
 
-LaporTemu adalah aplikasi berbasis Android yang dirancang untuk mempermudah pelaporan dan penemuan barang hilang atau kejadian tertentu. Proyek ini dikembangkan sebagai bagian dari tugas akademik program studi Teknik Informatika, Universitas Pamulang.
+<div align="center">
+  <img src="app/src/main/res/drawable/ic_laportemu.png" alt="LaporTemu Logo" width="150" />
+</div>
 
-## 🚀 Fitur Utama
+**LaporTemu** adalah aplikasi Android modern yang dirancang untuk membantu masyarakat atau mahasiswa melaporkan barang hilang (*Lost*) dan barang yang ditemukan (*Found*). Dengan dukungan sinkronisasi *real-time*, pengguna dapat dengan cepat saling terhubung dan mengembalikan barang ke pemilik aslinya.
 
-*(Ubah dan sesuaikan fitur di bawah ini dengan fungsi asli LaporTemu kalian)*
+## ✨ Fitur Utama
+* **Pelaporan Real-time**: Didukung oleh Firebase Cloud Firestore, semua laporan barang hilang maupun ditemukan akan muncul secara instan di layar pengguna lain tanpa perlu memuat ulang (*refresh*) halaman.
+* **Keamanan & Kepemilikan**: Setiap laporan dikunci dengan *User ID*. Pengguna hanya dapat mengedit dan menghapus laporan yang mereka buat sendiri.
+* **Autentikasi Pengguna**: Sistem Login dan Pendaftaran aman yang ditenagai oleh Firebase Authentication.
+* **Manajemen Profil Terintegrasi**: Pengguna dapat mengatur Nama, NIM, serta foto profil yang tersimpan secara *real-time* dan didukung dengan sistem *Cache* pintar agar transisi halaman sangat mulus tanpa *loading/blink*.
+* **Input Berbasis Suara (Speech-to-Text)**: Malas mengetik? Isi formulir pelaporan (Nama barang, Lokasi, Deskripsi) dengan mudah menggunakan fitur pengenalan suara Google.
+* **Text-to-Speech (TTS) Pintar**: Dukungan aksesibilitas di mana aplikasi bisa membacakan detail informasi laporan barang secara lisan.
+* **Integrasi WhatsApp Langsung**: Temukan barang Anda? Hubungi sang penemu secara instan melalui WhatsApp dengan satu kali klik.
 
-* **Form Pelaporan:** Pengguna dapat dengan mudah membuat laporan barang hilang/ditemukan.
-* **Sistem Pencarian:** Fitur pencarian untuk mencocokkan laporan kehilangan dengan laporan penemuan.
-* **Notifikasi Real-time:** Memberikan pembaruan status laporan kepada pengguna.
-* **Antarmuka Intuitif:** Desain UI/UX yang sederhana dan mudah digunakan.
+## 🛠️ Teknologi & Stack
+* **Bahasa Pemrograman**: Java
+* **UI/UX**: Material Design Components (MDC) & Custom Drawables
+* **Backend as a Service (BaaS)**: 
+  * Firebase Authentication
+  * Firebase Cloud Firestore
+* **Image Processing**: Glide & Base64 Compression/Encoding
+* **Hardware APIs**: SpeechRecognizer API, TextToSpeech API, Camera/Gallery Intent
 
-## 🛠️ Teknologi yang Digunakan
-
-* **Platform:** Android (Java)
-* **IDE:** Android Studio
-* **Version Control:** Git & GitHub
-
-## 💻 Cara Menjalankan Proyek (Lokal)
-
-Jika kamu ingin menjalankan proyek ini di komputermu sendiri (kloning), ikuti langkah-langkah berikut:
-
-1. **Clone repository ini:**
+## 🚀 Persiapan & Cara Menjalankan
+1. *Clone* repositori ini ke komputer Anda:
    ```bash
-   git clone [https://github.com/MAMThanatos/LaporTemu.git](https://github.com/MAMThanatos/LaporTemu.git)
+   git clone https://github.com/username/LaporTemu.git
+   ```
+2. Buka *folder* proyek menggunakan **Android Studio**.
+3. Hubungkan aplikasi dengan proyek **Firebase** milik Anda:
+   - Buat proyek di [Firebase Console](https://console.firebase.google.com/).
+   - Daftarkan aplikasi Android dan unduh file `google-services.json`.
+   - Letakkan file `google-services.json` ke dalam direktori `app/`.
+   - Aktifkan fitur **Firestore Database** (atur *Rules* menjadi *Test Mode*).
+   - Aktifkan fitur **Authentication** (pilih penyedia *Email/Password*).
+4. Tekan tombol **Run (▶)** (atau `Shift + F10`) di Android Studio untuk memasang aplikasi ke *Emulator* atau *Smartphone* Android Anda.
+
+## 🤝 Kontribusi
+Aplikasi ini dikembangkan untuk mempermudah ekosistem pelaporan barang. Jika Anda ingin berkontribusi, silakan buat *Pull Request* atau laporkan masalah melalui tab *Issues*.
+
+---
+Dibuat dengan ❤️ untuk mengembalikan senyuman mereka yang kehilangan.
