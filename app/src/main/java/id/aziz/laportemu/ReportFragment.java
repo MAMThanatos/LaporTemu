@@ -212,10 +212,7 @@ public class ReportFragment extends Fragment {
         // 🚀 Upload ke Firestore
         FirebaseFirestore.getInstance().collection("reports").add(newBarang)
             .addOnSuccessListener(documentReference -> {
-                // 🔔 Push notification (Local)
-                NotificationHelper.sendLaporanNotification(requireContext(), nama, status);
-                
-                // 📡 Broadcast Notifikasi ke Semua HP (Lintas Perangkat)
+                // 📡 Broadcast Notifikasi ke Semua HP (termasuk diri sendiri)
                 FCMHelper.sendNotificationToAll(requireContext(), "Laporan Baru: " + nama, "Seseorang melaporkan barang " + status + " di " + lokasi);
 
                 Toast.makeText(requireContext(), "Laporan Berhasil Disimpan!", Toast.LENGTH_SHORT).show();
