@@ -523,3 +523,4 @@ WARNING: Unmatched cancel notification for request id 54
 2026.07.02 07:08:55 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\EditReportActivity.java. Using fallback presentation compiler.
 2026.07.02 07:09:13 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\Barang.java. Using fallback presentation compiler.
 2026.07.02 07:09:44 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\DetailActivity.java. Using fallback presentation compiler.
+2026.07.02 07:15:10 INFO  no build target found for C:\Users\Aziz\AndroidStudioProjects\LaporTemu\app\src\main\java\id\aziz\laportemu\LoginActivity.java. Using fallback presentation compiler.
