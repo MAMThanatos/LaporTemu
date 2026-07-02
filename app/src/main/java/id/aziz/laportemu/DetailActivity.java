@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -11,17 +12,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import java.util.Locale;
+
 public class DetailActivity extends AppCompatActivity {
+
+    private TextToSpeech tts;
+    private int itemIndex = -1;
+
+    // Launcher untuk menerima hasil dari EditReportActivity
+    private final ActivityResultLauncher<Intent> editLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Data berubah — reload layar ini
+                    recreate();
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Transparent status bar for hero image
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -29,38 +47,34 @@ public class DetailActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_detail);
 
-        // Get Index
-        int index = getIntent().getIntExtra("ITEM_INDEX", -1);
-        if (index == -1 || index >= DataStore.barangList.size()) {
+        itemIndex = getIntent().getIntExtra("ITEM_INDEX", -1);
+        if (itemIndex == -1 || itemIndex >= DataStore.barangList.size()) {
             Toast.makeText(this, "Data tidak ditemukan", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        Barang barang = DataStore.barangList.get(index);
+        Barang barang = DataStore.barangList.get(itemIndex);
 
-        // Views
-        ImageView imgPhoto = findViewById(R.id.img_detail_photo);
-        ImageButton btnBack = findViewById(R.id.btn_back);
-        ImageButton btnShare = findViewById(R.id.btn_share);
-        
-        CardView cvBadge = findViewById(R.id.cv_detail_badge);
-        TextView tvStatus = findViewById(R.id.tv_detail_status);
-        TextView tvNama = findViewById(R.id.tv_detail_nama);
-        TextView tvWaktu = findViewById(R.id.tv_detail_waktu);
-        TextView tvLokasi = findViewById(R.id.tv_detail_lokasi);
-        TextView tvDeskripsi = findViewById(R.id.tv_detail_deskripsi);
-        Button btnHubungi = findViewById(R.id.btn_hubungi);
-        Button btnHapus = findViewById(R.id.btn_hapus);
+        // ─── Views ────────────────────────────────────────────────────────────────
+        ImageView imgPhoto    = findViewById(R.id.img_detail_photo);
+        ImageButton btnBack   = findViewById(R.id.btn_back);
+        ImageButton btnShare  = findViewById(R.id.btn_share);
+        CardView cvBadge      = findViewById(R.id.cv_detail_badge);
+        TextView tvStatus     = findViewById(R.id.tv_detail_status);
+        TextView tvNama       = findViewById(R.id.tv_detail_nama);
+        TextView tvWaktu      = findViewById(R.id.tv_detail_waktu);
+        TextView tvLokasi     = findViewById(R.id.tv_detail_lokasi);
+        TextView tvDeskripsi  = findViewById(R.id.tv_detail_deskripsi);
+        CardView btnSpeak     = findViewById(R.id.btn_speak);
+        Button btnHubungi     = findViewById(R.id.btn_hubungi);
+        Button btnEdit        = findViewById(R.id.btn_edit);
+        Button btnHapus       = findViewById(R.id.btn_hapus);
 
-        // Bind Data
+        // ─── Bind Data ────────────────────────────────────────────────────────────
         if (barang.getImageUriString() != null) {
-            try {
-                imgPhoto.setImageURI(Uri.parse(barang.getImageUriString()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                imgPhoto.setImageResource(R.mipmap.ic_launcher);
-            }
+            try { imgPhoto.setImageURI(Uri.parse(barang.getImageUriString())); }
+            catch (Exception e) { imgPhoto.setImageResource(R.mipmap.ic_launcher); }
         } else if (barang.getImageResId() != 0) {
             imgPhoto.setImageResource(barang.getImageResId());
         } else {
@@ -68,15 +82,10 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         tvNama.setText(barang.getNama());
-        tvWaktu.setText(barang.getWaktu());
+        tvWaktu.setText(barang.getRelativeTime());
         tvLokasi.setText(barang.getLokasi());
-        
-        // Deskripsi (if empty, show a placeholder)
-        if (barang.getDeskripsi() != null && !barang.getDeskripsi().isEmpty()) {
-            tvDeskripsi.setText(barang.getDeskripsi());
-        } else {
-            tvDeskripsi.setText("Tidak ada deskripsi tambahan.");
-        }
+        tvDeskripsi.setText((barang.getDeskripsi() != null && !barang.getDeskripsi().isEmpty())
+                ? barang.getDeskripsi() : "Tidak ada deskripsi tambahan.");
 
         tvStatus.setText(barang.getStatus());
         if ("Hilang".equalsIgnoreCase(barang.getStatus())) {
@@ -87,82 +96,85 @@ public class DetailActivity extends AppCompatActivity {
             tvStatus.setTextColor(ContextCompat.getColor(this, R.color.found_text));
         }
 
-        // Actions
+        // ─── TTS Init ─────────────────────────────────────────────────────────────
+        tts = new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(new Locale("id", "ID"));
+            }
+        });
+
+        // ─── Listeners ────────────────────────────────────────────────────────────
         btnBack.setOnClickListener(v -> finish());
-        
+
         btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Info " + barang.getStatus() + ": " + barang.getNama() + " di " + barang.getLokasi() + ". Hubungi: " + barang.getPhone());
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Info " + barang.getStatus() + ": " + barang.getNama()
+                    + " di " + barang.getLokasi()
+                    + ". Hubungi: " + barang.getPhone());
             startActivity(Intent.createChooser(shareIntent, "Bagikan Informasi"));
         });
 
-        btnHubungi.setOnClickListener(v -> {
-            String message = "Halo, saya melihat info di aplikasi LaporTemu mengenai barang *" + barang.getNama() + "* " + barang.getStatus() + " di lokasi *" + barang.getLokasi() + "*.\n\n"
-                    + "Apakah saya bisa minta info lebih lanjut terkait hal ini?";
-            
-            String phone = barang.getPhone();
-            if (phone != null) {
-                if (phone.startsWith("0")) {
-                    phone = "62" + phone.substring(1);
-                }
-                phone = phone.replace("+", "").replace(" ", "").replace("-", "");
-            } else {
-                phone = "";
-            }
-
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.setPackage("com.whatsapp");
-            intent.putExtra(Intent.EXTRA_TEXT, message);
-            intent.putExtra("jid", phone + "@s.whatsapp.net");
-            
-            if (barang.getImageUriString() != null) {
-                try {
-                    Uri imageUri = Uri.parse(barang.getImageUriString());
-                    intent.setType("image/*");
-                    intent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (barang.getImageResId() != 0) {
-                try {
-                    Uri imageUri = Uri.parse("android.resource://" + getPackageName() + "/" + barang.getImageResId());
-                    intent.setType("image/*");
-                    intent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            try {
-                startActivity(intent);
-            } catch (Exception e) {
-                String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + Uri.encode(message);
-                Intent fallbackIntent = new Intent(Intent.ACTION_VIEW);
-                fallbackIntent.setData(Uri.parse(url));
-                try {
-                    startActivity(fallbackIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, "WhatsApp tidak terinstal", Toast.LENGTH_SHORT).show();
-                }
+        // TTS — Bacakan deskripsi barang
+        btnSpeak.setOnClickListener(v -> {
+            String teks = "Barang " + barang.getStatus() + ". "
+                    + "Nama barang: " + barang.getNama() + ". "
+                    + "Lokasi: " + barang.getLokasi() + ". "
+                    + "Deskripsi: " + tvDeskripsi.getText().toString();
+            if (tts != null) {
+                tts.speak(teks, TextToSpeech.QUEUE_FLUSH, null, "detail_tts");
+                Toast.makeText(this, "🔊 Membacakan informasi...", Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnHapus.setOnClickListener(v -> {
+        // Edit
+        btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EditReportActivity.class);
+            intent.putExtra("ITEM_INDEX", itemIndex);
+            editLauncher.launch(intent);
+        });
+
+        // Hapus
+        btnHapus.setOnClickListener(v ->
             new AlertDialog.Builder(this)
                 .setTitle("Hapus Laporan")
-                .setMessage("Apakah laporan ini sudah selesai dan ingin dihapus dari daftar?")
+                .setMessage("Laporan ini akan dihapus dari daftar. Lanjutkan?")
                 .setPositiveButton("Ya, Hapus", (dialog, which) -> {
-                    DataStore.barangList.remove(index);
+                    DataStore.barangList.remove(itemIndex);
                     DataStore.saveData(this);
                     Toast.makeText(this, "Laporan berhasil dihapus", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .setNegativeButton("Batal", null)
-                .show();
+                .show()
+        );
+
+        // Hubungi WA
+        btnHubungi.setOnClickListener(v -> {
+            String message = "Halo, saya melihat info di aplikasi LaporTemu mengenai barang *"
+                    + barang.getNama() + "* " + barang.getStatus()
+                    + " di lokasi *" + barang.getLokasi() + "*.\n\n"
+                    + "Apakah saya bisa minta info lebih lanjut terkait hal ini?";
+            String phone = barang.getPhone() != null ? barang.getPhone() : "";
+            if (phone.startsWith("0")) phone = "62" + phone.substring(1);
+            phone = phone.replace("+", "").replace(" ", "").replace("-", "");
+
+            String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + Uri.encode(message);
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            } catch (Exception e) {
+                Toast.makeText(this, "WhatsApp tidak terinstal", Toast.LENGTH_SHORT).show();
+            }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 }

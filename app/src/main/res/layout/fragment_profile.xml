@@ -9,167 +9,177 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="16dp"
         android:paddingBottom="32dp">
 
-        <!-- User Profile Card -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_user_profile"
+        <!-- ─── PROFILE HEADER (Teal Gradient) ─── -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="18dp"
-            app:cardElevation="3dp"
-            app:cardBackgroundColor="@color/white">
+            android:background="@drawable/bg_header_gradient"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="40dp">
 
-            <LinearLayout
+            <!-- Avatar Circle -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="40dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/white">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_profile_initial"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="P"
+                        android:textColor="@color/primary"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_profile_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Pengguna"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_profile_nim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NIM: —"
+                android:textColor="#CCFFFFFF"
+                android:textSize="13sp"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/tv_profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email: —"
+                android:textColor="#AAFFFFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- ─── ACTION BUTTONS ─── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:layout_marginTop="-16dp">
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                app:cardCornerRadius="18dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white"
+                android:layout_marginBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        app:cardCornerRadius="30dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@color/surface_teal">
-                        
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/btn_edit_profile"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="✏️  Edit Profil"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
+                        android:backgroundTint="@color/primary"
+                        android:layout_marginBottom="10dp"
+                        app:cornerRadius="24dp" />
 
-                            <TextView
-                                android:id="@+id/tv_profile_initial"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="P"
-                                android:textColor="@color/primary"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btn_logout"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="🚪  Keluar Akun"
+                        android:textColor="#DC2626"
+                        app:strokeColor="#DC2626"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
+                        app:cornerRadius="24dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                            <ImageView
-                                android:id="@+id/iv_profile_image"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:visibility="gone" />
-                        </FrameLayout>
-                    </androidx.cardview.widget.CardView>
+            <!-- ─── ABOUT CARD ─── -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp">
 
                         <TextView
-                            android:id="@+id/tv_profile_name"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Memuat nama..."
+                            android:layout_weight="1"
+                            android:text="Tentang Aplikasi"
                             android:textColor="@color/text_main"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_profile_nim"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NIM: Memuat..."
-                            android:textColor="@color/text_muted"
-                            android:textSize="14sp"
-                            android:layout_marginTop="2dp" />
-
-                        <TextView
-                            android:id="@+id/tv_profile_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Surel: Memuat..."
-                            android:textColor="@color/text_light"
+                            android:text="v1.0.0"
+                            android:textColor="@color/primary"
                             android:textSize="12sp"
-                            android:layout_marginTop="2dp" />
+                            android:textStyle="bold"
+                            android:background="@color/primary_ultra_light"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="LaporTemu adalah aplikasi pelaporan barang hilang dan temuan di lingkungan kampus. Membantu mahasiswa menemukan kembali barang mereka yang hilang."
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="4dp" />
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_edit_profile"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:text="Edit Profil"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="12dp"
-                    app:cornerRadius="22dp" />
-
-                <Button
-                    android:id="@+id/btn_logout"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:text="Keluar Akun"
-                    android:textColor="#DC2626"
-                    app:strokeColor="#DC2626"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    app:cornerRadius="22dp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- App Info Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tentang Aplikasi"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="LaporTemu adalah aplikasi pelaporan barang hilang dan temuan di lingkungan kampus. Aplikasi ini membantu mahasiswa untuk menemukan kembali barang mereka yang hilang."
-                    android:textColor="@color/text_muted"
-                    android:textSize="13sp"
-                    android:lineSpacingExtra="4dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Versi 1.0.0"
-                    android:textColor="@color/primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp"
-                    android:gravity="end" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

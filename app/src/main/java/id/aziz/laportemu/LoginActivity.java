@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
         tvBtnRegister = findViewById(R.id.tv_btn_register);
-        loadingProgress = findViewById(R.id.loading_progress);
+        loadingProgress = findViewById(R.id.login_progress);
 
         btnLogin.setOnClickListener(v -> loginUser());
 

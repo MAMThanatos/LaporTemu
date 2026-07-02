@@ -53,6 +53,10 @@
             android:name=".DetailActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".EditReportActivity"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="id.aziz.laportemu.fileprovider"

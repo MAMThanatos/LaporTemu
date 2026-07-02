@@ -62,6 +62,7 @@ public class Barang {
     public String getStatus()        { return status; }
     public String getWaktu()         { return waktu; }
     public long   getTimestamp()     { return timestamp; }
+    public void   setTimestamp(long ts) { this.timestamp = ts; }
     public String getDeskripsi()     { return deskripsi; }
     public String getPhone()         { return phone; }
     public String getImageUriString(){ return imageUriString; }
