@@ -132,14 +132,21 @@
                         android:textStyle="bold"
                         android:textSize="13sp" />
 
-                    <ImageView
-                        android:id="@+id/btn_mic_nama"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@android:drawable/ic_btn_speak_now"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Ucapkan nama barang"
-                        android:padding="4dp" />
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/primary_ultra_light">
+                        <ImageView
+                            android:id="@+id/btn_mic_nama"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_btn_speak_now"
+                            app:tint="@color/primary"
+                            android:contentDescription="Ucapkan nama barang" />
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -176,14 +183,21 @@
                         android:textStyle="bold"
                         android:textSize="13sp" />
 
-                    <ImageView
-                        android:id="@+id/btn_mic_lokasi"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@android:drawable/ic_btn_speak_now"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Ucapkan lokasi"
-                        android:padding="4dp" />
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/primary_ultra_light">
+                        <ImageView
+                            android:id="@+id/btn_mic_lokasi"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_btn_speak_now"
+                            app:tint="@color/primary"
+                            android:contentDescription="Ucapkan lokasi" />
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -219,14 +233,21 @@
                         android:textStyle="bold"
                         android:textSize="13sp" />
 
-                    <ImageView
-                        android:id="@+id/btn_mic_deskripsi"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@android:drawable/ic_btn_speak_now"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Ucapkan deskripsi"
-                        android:padding="4dp" />
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/primary_ultra_light">
+                        <ImageView
+                            android:id="@+id/btn_mic_deskripsi"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_btn_speak_now"
+                            app:tint="@color/primary"
+                            android:contentDescription="Ucapkan deskripsi" />
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -265,14 +286,21 @@
                         android:textStyle="bold"
                         android:textSize="13sp" />
 
-                    <ImageView
-                        android:id="@+id/btn_mic_wa"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@android:drawable/ic_btn_speak_now"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Ucapkan nomor WA"
-                        android:padding="4dp" />
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/primary_ultra_light">
+                        <ImageView
+                            android:id="@+id/btn_mic_wa"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_btn_speak_now"
+                            app:tint="@color/primary"
+                            android:contentDescription="Ucapkan nomor WA" />
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
