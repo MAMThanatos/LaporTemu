@@ -147,7 +147,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:src="@android:drawable/ic_btn_speak_now"
+                            android:src="@android:drawable/ic_lock_silent_mode_off"
                             app:tint="@color/primary" />
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>

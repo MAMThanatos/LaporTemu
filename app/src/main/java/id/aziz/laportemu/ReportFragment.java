@@ -212,10 +212,13 @@ public class ReportFragment extends Fragment {
         // 🚀 Upload ke Firestore
         FirebaseFirestore.getInstance().collection("reports").add(newBarang)
             .addOnSuccessListener(documentReference -> {
-                // 🔔 Push notification
+                // 🔔 Push notification (Local)
                 NotificationHelper.sendLaporanNotification(requireContext(), nama, status);
+                
+                // 📡 Broadcast Notifikasi ke Semua HP (Lintas Perangkat)
+                FCMHelper.sendNotificationToAll(requireContext(), "Laporan Baru: " + nama, "Seseorang melaporkan barang " + status + " di " + lokasi);
 
-                // ✅ Snackbar with action
+                Toast.makeText(requireContext(), "Laporan Berhasil Disimpan!", Toast.LENGTH_SHORT).show();
                 if (rootView != null) {
                     Snackbar.make(rootView, "Laporan \"" + nama + "\" berhasil dikirim!", Snackbar.LENGTH_LONG)
                             .setAction("Lihat", v -> requireActivity().findViewById(R.id.navigation_home).performClick())

@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Firebase Secret Key (NEVER PUSH TO GITHUB)
+service_account.json

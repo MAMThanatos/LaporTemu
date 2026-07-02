@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +46,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Load data from local storage
-        DataStore.loadData(this);
+        setContentView(R.layout.activity_main);
+
+        // Berlangganan topik "all_reports" agar HP ini menerima broadcast notifikasi lintas perangkat
+        FirebaseMessaging.getInstance().subscribeToTopic("all_reports");
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnItemSelectedListener(item -> {
