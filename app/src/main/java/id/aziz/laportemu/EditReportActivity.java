@@ -75,8 +75,8 @@ public class EditReportActivity extends AppCompatActivity {
             return;
         }
 
-        // Build updated Barang (preserve existing image + timestamp)
-        Barang updated = new Barang(nama, lokasi, status, original.getWaktu(), deskripsi, phone, original.getImageBase64());
+        // Build updated Barang (preserve existing image + timestamp + userId)
+        Barang updated = new Barang(nama, lokasi, status, original.getWaktu(), deskripsi, phone, original.getImageBase64(), original.getUserId());
         updated.setId(original.getId());
         // Preserve original timestamp so time display stays accurate
         updated.setTimestamp(original.getTimestamp());

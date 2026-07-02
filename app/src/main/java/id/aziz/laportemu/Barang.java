@@ -15,6 +15,7 @@ public class Barang {
     private String phone;
     private String imageBase64;
     private int imageResId = 0;
+    private String userId;
 
     // Default constructor required for calls to DataSnapshot.getValue(Barang.class) / Firestore
     public Barang() {
@@ -22,7 +23,7 @@ public class Barang {
 
     // ─── Primary constructor (new reports) ─────────────────────────────────────
     public Barang(String nama, String lokasi, String status, String waktu,
-                  String deskripsi, String phone, String imageBase64) {
+                  String deskripsi, String phone, String imageBase64, String userId) {
         this.nama = nama;
         this.lokasi = lokasi;
         this.status = status;
@@ -31,6 +32,7 @@ public class Barang {
         this.deskripsi = deskripsi;
         this.phone = phone;
         this.imageBase64 = imageBase64;
+        this.userId = userId;
     }
 
     // ─── Constructor with drawable resource (for Dummy Data) ────────────────────
@@ -92,4 +94,7 @@ public class Barang {
 
     public int getImageResId() { return imageResId; }
     public void setImageResId(int imageResId) { this.imageResId = imageResId; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 }

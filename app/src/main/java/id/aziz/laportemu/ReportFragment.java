@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -200,7 +201,13 @@ public class ReportFragment extends Fragment {
         if (imageUri != null) {
             imageBase64 = ImageUtils.compressAndEncodeBase64(requireContext(), imageUri);
         }
-        Barang newBarang   = new Barang(nama, lokasi, status, "Baru saja", deskripsi, wa, imageBase64);
+        
+        String currentUserId = "";
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+        
+        Barang newBarang   = new Barang(nama, lokasi, status, "Baru saja", deskripsi, wa, imageBase64, currentUserId);
 
         // 🚀 Upload ke Firestore
         FirebaseFirestore.getInstance().collection("reports").add(newBarang)

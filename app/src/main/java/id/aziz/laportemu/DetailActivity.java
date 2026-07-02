@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
+import android.view.View;
 
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -72,6 +74,21 @@ public class DetailActivity extends AppCompatActivity {
         Button btnHubungi     = findViewById(R.id.btn_hubungi);
         Button btnEdit        = findViewById(R.id.btn_edit);
         Button btnHapus       = findViewById(R.id.btn_hapus);
+
+        // ─── Check Ownership ──────────────────────────────────────────────────────
+        String currentUserId = "";
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
+        // Only show Edit and Delete if the user created the report, or for local dummy data (userId == null)
+        if (barang.getUserId() == null || barang.getUserId().equals(currentUserId)) {
+            btnEdit.setVisibility(View.VISIBLE);
+            btnHapus.setVisibility(View.VISIBLE);
+        } else {
+            btnEdit.setVisibility(View.GONE);
+            btnHapus.setVisibility(View.GONE);
+        }
 
         // ─── Bind Data ────────────────────────────────────────────────────────────
         if (barang.getImageBase64() != null && !barang.getImageBase64().isEmpty()) {
