@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -72,9 +74,12 @@ public class DetailActivity extends AppCompatActivity {
         Button btnHapus       = findViewById(R.id.btn_hapus);
 
         // ─── Bind Data ────────────────────────────────────────────────────────────
-        if (barang.getImageUriString() != null) {
-            try { imgPhoto.setImageURI(Uri.parse(barang.getImageUriString())); }
-            catch (Exception e) { imgPhoto.setImageResource(R.mipmap.ic_launcher); }
+        if (barang.getImageBase64() != null && !barang.getImageBase64().isEmpty()) {
+            try { 
+                android.graphics.Bitmap bmp = ImageUtils.decodeBase64(barang.getImageBase64());
+                if (bmp != null) imgPhoto.setImageBitmap(bmp);
+                else imgPhoto.setImageResource(R.mipmap.ic_launcher);
+            } catch (Exception e) { imgPhoto.setImageResource(R.mipmap.ic_launcher); }
         } else if (barang.getImageResId() != 0) {
             imgPhoto.setImageResource(barang.getImageResId());
         } else {
@@ -141,10 +146,18 @@ public class DetailActivity extends AppCompatActivity {
                 .setTitle("Hapus Laporan")
                 .setMessage("Laporan ini akan dihapus dari daftar. Lanjutkan?")
                 .setPositiveButton("Ya, Hapus", (dialog, which) -> {
-                    DataStore.barangList.remove(itemIndex);
-                    DataStore.saveData(this);
-                    Toast.makeText(this, "Laporan berhasil dihapus", Toast.LENGTH_SHORT).show();
-                    finish();
+                    if (barang.getId() != null) {
+                        FirebaseFirestore.getInstance().collection("reports").document(barang.getId()).delete()
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(this, "Laporan berhasil dihapus", Toast.LENGTH_SHORT).show();
+                                finish();
+                            });
+                    } else {
+                        // Fallback for local dummy data
+                        DataStore.barangList.remove(itemIndex);
+                        Toast.makeText(this, "Laporan lokal berhasil dihapus", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                 })
                 .setNegativeButton("Batal", null)
                 .show()

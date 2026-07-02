@@ -16,6 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -194,37 +195,44 @@ public class ReportFragment extends Fragment {
             return;
         }
 
-        String status      = kategori.equals("Kehilangan") ? "Hilang" : "Ditemukan";
-        String imageUriStr = imageUri != null ? imageUri.toString() : null;
-        Barang newBarang   = new Barang(nama, lokasi, status, "Baru saja", deskripsi, wa, imageUriStr);
-
-        DataStore.barangList.add(0, newBarang);
-        DataStore.saveData(requireContext());
-
-        // 🔔 Push notification
-        NotificationHelper.sendLaporanNotification(requireContext(), nama, status);
-
-        // ✅ Snackbar with action
-        if (rootView != null) {
-            Snackbar.make(rootView, "✅ Laporan \"" + nama + "\" berhasil dikirim!", Snackbar.LENGTH_LONG)
-                    .setAction("Lihat", v -> requireActivity().findViewById(R.id.navigation_home).performClick())
-                    .setActionTextColor(requireContext().getColor(R.color.secondary))
-                    .show();
+        String status = kategori.equals("Kehilangan") ? "Hilang" : "Ditemukan";
+        String imageBase64 = null;
+        if (imageUri != null) {
+            imageBase64 = ImageUtils.compressAndEncodeBase64(requireContext(), imageUri);
         }
+        Barang newBarang   = new Barang(nama, lokasi, status, "Baru saja", deskripsi, wa, imageBase64);
 
-        // Clear form
-        etNamaBarang.setText("");
-        spinnerKategori.setText("");
-        etLokasiBarang.setText("");
-        etDeskripsi.setText("");
-        etWhatsapp.setText("");
-        imgPreview.setImageResource(android.R.drawable.ic_menu_camera);
-        imgPreview.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        imgPreview.setColorFilter(requireContext().getColor(R.color.primary));
-        imageUri = null;
+        // 🚀 Upload ke Firestore
+        FirebaseFirestore.getInstance().collection("reports").add(newBarang)
+            .addOnSuccessListener(documentReference -> {
+                // 🔔 Push notification
+                NotificationHelper.sendLaporanNotification(requireContext(), nama, status);
 
-        // Navigate to Home
-        requireActivity().findViewById(R.id.navigation_home).performClick();
+                // ✅ Snackbar with action
+                if (rootView != null) {
+                    Snackbar.make(rootView, "✅ Laporan \"" + nama + "\" berhasil dikirim!", Snackbar.LENGTH_LONG)
+                            .setAction("Lihat", v -> requireActivity().findViewById(R.id.navigation_home).performClick())
+                            .setActionTextColor(requireContext().getColor(R.color.secondary))
+                            .show();
+                }
+
+                // Clear form
+                etNamaBarang.setText("");
+                spinnerKategori.setText("");
+                etLokasiBarang.setText("");
+                etDeskripsi.setText("");
+                etWhatsapp.setText("");
+                imgPreview.setImageResource(android.R.drawable.ic_menu_camera);
+                imgPreview.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                imgPreview.setColorFilter(requireContext().getColor(R.color.primary));
+                imageUri = null;
+
+                // Navigate to Home
+                requireActivity().findViewById(R.id.navigation_home).performClick();
+            })
+            .addOnFailureListener(e -> {
+                Toast.makeText(getContext(), "Gagal mengirim: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
     }
 
     // ─── Image picker ─────────────────────────────────────────────────────────

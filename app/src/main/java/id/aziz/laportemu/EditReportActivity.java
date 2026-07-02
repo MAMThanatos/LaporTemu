@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class EditReportActivity extends AppCompatActivity {
 
@@ -74,22 +76,24 @@ public class EditReportActivity extends AppCompatActivity {
         }
 
         // Build updated Barang (preserve existing image + timestamp)
-        Barang updated;
-        if (original.getImageUriString() != null) {
-            updated = new Barang(nama, lokasi, status, original.getWaktu(),
-                    deskripsi, phone, original.getImageUriString());
-        } else {
-            updated = new Barang(nama, lokasi, status, original.getWaktu(),
-                    deskripsi, phone, original.getImageResId());
-        }
+        Barang updated = new Barang(nama, lokasi, status, original.getWaktu(), deskripsi, phone, original.getImageBase64());
+        updated.setId(original.getId());
         // Preserve original timestamp so time display stays accurate
         updated.setTimestamp(original.getTimestamp());
 
-        DataStore.barangList.set(itemIndex, updated);
-        DataStore.saveData(this);
-
-        Toast.makeText(this, "✅ Laporan berhasil diperbarui!", Toast.LENGTH_SHORT).show();
-        setResult(RESULT_OK);
-        finish();
+        if (original.getId() != null) {
+            FirebaseFirestore.getInstance().collection("reports").document(original.getId())
+                .set(updated)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "✅ Laporan berhasil diperbarui di Cloud!", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
+                    finish();
+                });
+        } else {
+            DataStore.barangList.set(itemIndex, updated);
+            Toast.makeText(this, "✅ Laporan lokal diperbarui!", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish();
+        }
     }
 }

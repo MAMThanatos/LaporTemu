@@ -43,9 +43,14 @@ public class BarangAdapter extends RecyclerView.Adapter<BarangAdapter.BarangView
         holder.tvWaktu.setText(barang.getRelativeTime());
         holder.tvStatus.setText(barang.getStatus());
 
-        if (barang.getImageUriString() != null) {
+        if (barang.getImageBase64() != null && !barang.getImageBase64().isEmpty()) {
             try {
-                holder.imgBarang.setImageURI(Uri.parse(barang.getImageUriString()));
+                android.graphics.Bitmap bmp = ImageUtils.decodeBase64(barang.getImageBase64());
+                if (bmp != null) {
+                    holder.imgBarang.setImageBitmap(bmp);
+                } else {
+                    holder.imgBarang.setImageResource(R.mipmap.ic_launcher);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 holder.imgBarang.setImageResource(R.mipmap.ic_launcher);

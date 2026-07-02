@@ -10,6 +10,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +38,36 @@ public class HomeFragment extends Fragment {
         btnHilang = view.findViewById(R.id.btn_filter_hilang);
         btnKetemu = view.findViewById(R.id.btn_filter_ketemu);
 
-        DataStore.loadData(requireContext());
-
         adapter = new BarangAdapter(getContext(), DataStore.barangList);
         rvBarang.setLayoutManager(new LinearLayoutManager(getContext()));
         rvBarang.setAdapter(adapter);
 
         // Initial state
         setActiveFilter(btnSemua);
+
+        // 🚀 Real-time Firestore Listener
+        FirebaseFirestore.getInstance().collection("reports")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        return;
+                    }
+                    if (value != null) {
+                        DataStore.barangList.clear();
+                        for (QueryDocumentSnapshot doc : value) {
+                            Barang b = doc.toObject(Barang.class);
+                            DataStore.barangList.add(b);
+                        }
+                        // Refresh with current filter
+                        if (btnHilang.getStrokeWidth() == 0) {
+                            btnHilang.performClick();
+                        } else if (btnKetemu.getStrokeWidth() == 0) {
+                            btnKetemu.performClick();
+                        } else {
+                            btnSemua.performClick();
+                        }
+                    }
+                });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -109,8 +134,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (adapter != null) {
-            adapter.updateData(DataStore.barangList);
-        }
+        // Removed local refresh since Firestore listener handles it
     }
 }
