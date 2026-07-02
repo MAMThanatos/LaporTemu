@@ -38,8 +38,5 @@
    - Aktifkan fitur **Authentication** (pilih penyedia *Email/Password*).
 4. Tekan tombol **Run (▶)** (atau `Shift + F10`) di Android Studio untuk memasang aplikasi ke *Emulator* atau *Smartphone* Android Anda.
 
-## 🤝 Kontribusi
-Aplikasi ini dikembangkan untuk mempermudah ekosistem pelaporan barang. Jika Anda ingin berkontribusi, silakan buat *Pull Request* atau laporkan masalah melalui tab *Issues*.
-
 ---
 Dibuat dengan ❤️ untuk mengembalikan senyuman mereka yang kehilangan.
