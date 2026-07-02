@@ -85,13 +85,13 @@ public class EditReportActivity extends AppCompatActivity {
             FirebaseFirestore.getInstance().collection("reports").document(original.getId())
                 .set(updated)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "✅ Laporan berhasil diperbarui di Cloud!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Laporan berhasil diperbarui di Cloud!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 });
         } else {
             DataStore.barangList.set(itemIndex, updated);
-            Toast.makeText(this, "✅ Laporan lokal diperbarui!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Laporan lokal diperbarui!", Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK);
             finish();
         }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class HomeFragment extends Fragment {
 
     private BarangAdapter adapter;
     private MaterialButton btnSemua, btnHilang, btnKetemu;
+    private ListenerRegistration snapshotListener;
 
     @Nullable
     @Override
@@ -46,10 +48,10 @@ public class HomeFragment extends Fragment {
         setActiveFilter(btnSemua);
 
         // 🚀 Real-time Firestore Listener
-        FirebaseFirestore.getInstance().collection("reports")
+        snapshotListener = FirebaseFirestore.getInstance().collection("reports")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
-                    if (error != null) {
+                    if (error != null || !isAdded() || getContext() == null) {
                         return;
                     }
                     if (value != null) {
@@ -135,5 +137,14 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Removed local refresh since Firestore listener handles it
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (snapshotListener != null) {
+            snapshotListener.remove();
+            snapshotListener = null;
+        }
     }
 }

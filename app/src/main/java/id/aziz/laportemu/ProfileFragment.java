@@ -28,6 +28,11 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    // Cache to prevent blinking when switching tabs
+    private static String cachedNama = null;
+    private static String cachedNim = null;
+    private static String cachedPhotoBase64 = null;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,18 +76,27 @@ public class ProfileFragment extends Fragment {
         String email = currentUser.getEmail();
         tvEmail.setText("Surel: " + email);
 
-        // Load photo from local storage (no Firebase Storage needed)
-        String localPhotoUri = EditProfileActivity.getLocalPhotoUri(getContext(), uid);
-        if (localPhotoUri != null && !localPhotoUri.isEmpty() && getActivity() != null) {
-            ivProfileImage.setVisibility(View.VISIBLE);
-            tvInitial.setVisibility(View.GONE);
-            Glide.with(getActivity()).load(localPhotoUri).circleCrop().into(ivProfileImage);
-        } else {
-            ivProfileImage.setVisibility(View.GONE);
-            tvInitial.setVisibility(View.VISIBLE);
+        // Apply cached data immediately to prevent blinking
+        if (cachedNama != null) {
+            tvName.setText(cachedNama.isEmpty() ? "Pengguna" : cachedNama);
+        }
+        if (cachedNim != null) {
+            tvNim.setText(cachedNim.isEmpty() ? "NIM: Tidak diatur" : "NIM: " + cachedNim);
+        }
+        if (cachedPhotoBase64 != null && !cachedPhotoBase64.isEmpty()) {
+            android.graphics.Bitmap bitmap = ImageUtils.decodeBase64(cachedPhotoBase64);
+            if (bitmap != null) {
+                ivProfileImage.setVisibility(View.VISIBLE);
+                tvInitial.setVisibility(View.GONE);
+                Glide.with(getActivity()).load(bitmap).circleCrop().into(ivProfileImage);
+            } else {
+                showInitial(cachedNama);
+            }
+        } else if (cachedNama != null) {
+            showInitial(cachedNama);
         }
 
-        // Fetch nama & NIM from Firestore
+        // Fetch nama, NIM, and photo from Firestore (updates cache silently)
         db.collection("users").document(uid).get()
                 .addOnCompleteListener(task -> {
                     if (isAdded()) {
@@ -91,19 +105,34 @@ public class ProfileFragment extends Fragment {
                             if (document.exists()) {
                                 String nama = document.getString("nama");
                                 String nim = document.getString("nim");
+                                String photoBase64 = document.getString("photoBase64");
+
+                                // Update cache
+                                cachedNama = nama;
+                                cachedNim = nim;
+                                cachedPhotoBase64 = photoBase64;
 
                                 tvName.setText(nama != null && !nama.isEmpty() ? nama : "Pengguna");
                                 tvNim.setText(nim != null && !nim.isEmpty() ? "NIM: " + nim : "NIM: Tidak diatur");
 
-                                // Update initial if no photo
-                                if (localPhotoUri == null || localPhotoUri.isEmpty()) {
-                                    tvInitial.setText(nama != null && !nama.isEmpty()
-                                            ? nama.substring(0, 1).toUpperCase() : "P");
+                                if (photoBase64 != null && !photoBase64.isEmpty()) {
+                                    android.graphics.Bitmap bitmap = ImageUtils.decodeBase64(photoBase64);
+                                    if (bitmap != null) {
+                                        ivProfileImage.setVisibility(View.VISIBLE);
+                                        tvInitial.setVisibility(View.GONE);
+                                        Glide.with(getActivity()).load(bitmap).circleCrop().into(ivProfileImage);
+                                    } else {
+                                        showInitial(nama);
+                                    }
+                                } else {
+                                    showInitial(nama);
                                 }
                             } else {
                                 tvName.setText("Pengguna");
                                 tvNim.setText("NIM: Tidak diatur");
                                 tvInitial.setText("P");
+                                ivProfileImage.setVisibility(View.GONE);
+                                tvInitial.setVisibility(View.VISIBLE);
                             }
                         } else {
                             Toast.makeText(getContext(), "Gagal memuat profil: " +
@@ -114,7 +143,19 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
+    private void showInitial(String nama) {
+        ivProfileImage.setVisibility(View.GONE);
+        tvInitial.setVisibility(View.VISIBLE);
+        tvInitial.setText(nama != null && !nama.isEmpty() ? nama.substring(0, 1).toUpperCase() : "P");
+    }
+
+
     private void logoutUser() {
+        // Clear cache on logout
+        cachedNama = null;
+        cachedNim = null;
+        cachedPhotoBase64 = null;
+        
         mAuth.signOut();
         Toast.makeText(getContext(), "Berhasil keluar akun", Toast.LENGTH_SHORT).show();
         redirectToLogin();

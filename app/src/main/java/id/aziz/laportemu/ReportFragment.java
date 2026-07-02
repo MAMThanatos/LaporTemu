@@ -210,7 +210,7 @@ public class ReportFragment extends Fragment {
 
                 // ✅ Snackbar with action
                 if (rootView != null) {
-                    Snackbar.make(rootView, "✅ Laporan \"" + nama + "\" berhasil dikirim!", Snackbar.LENGTH_LONG)
+                    Snackbar.make(rootView, "Laporan \"" + nama + "\" berhasil dikirim!", Snackbar.LENGTH_LONG)
                             .setAction("Lihat", v -> requireActivity().findViewById(R.id.navigation_home).performClick())
                             .setActionTextColor(requireContext().getColor(R.color.secondary))
                             .show();

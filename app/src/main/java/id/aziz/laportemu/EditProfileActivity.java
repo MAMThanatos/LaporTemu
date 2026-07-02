@@ -1,7 +1,6 @@
 package id.aziz.laportemu;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -33,9 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
-
-    private static final String PREF_NAME = "LaporTemuPrefs";
-    private static final String KEY_PROFILE_PHOTO = "profile_photo_uri_";
 
     private ImageView btnBack, ivEditProfileImage;
     private TextView tvEditInitial;
@@ -96,25 +92,28 @@ public class EditProfileActivity extends AppCompatActivity {
     private void loadCurrentProfile() {
         if (currentUser == null) return;
 
-        // Load photo from local storage (SharedPreferences)
-        String savedUri = getLocalPhotoUri(currentUser.getUid());
-        if (savedUri != null && !savedUri.isEmpty()) {
-            ivEditProfileImage.setVisibility(View.VISIBLE);
-            tvEditInitial.setVisibility(View.GONE);
-            Glide.with(this).load(savedUri).circleCrop().into(ivEditProfileImage);
-        }
-
-        // Load nama & NIM from Firestore
+        // Load nama, NIM, and photo from Firestore
         db.collection("users").document(currentUser.getUid()).get()
                 .addOnSuccessListener(document -> {
                     if (document.exists()) {
                         String nama = document.getString("nama");
                         String nim = document.getString("nim");
+                        String photoBase64 = document.getString("photoBase64");
+                        
                         if (nama != null && !nama.isEmpty()) {
                             etEditNama.setText(nama);
                             tvEditInitial.setText(nama.substring(0, 1).toUpperCase());
                         }
                         if (nim != null) etEditNim.setText(nim);
+                        
+                        if (photoBase64 != null && !photoBase64.isEmpty()) {
+                            Bitmap bitmap = ImageUtils.decodeBase64(photoBase64);
+                            if (bitmap != null) {
+                                ivEditProfileImage.setVisibility(View.VISIBLE);
+                                tvEditInitial.setVisibility(View.GONE);
+                                Glide.with(this).load(bitmap).circleCrop().into(ivEditProfileImage);
+                            }
+                        }
                     }
                 });
     }
@@ -129,22 +128,23 @@ public class EditProfileActivity extends AppCompatActivity {
         pbEditProfile.setVisibility(View.VISIBLE);
         btnSaveProfile.setEnabled(false);
 
-        // Save photo locally on device (no Firebase Storage needed)
-        if (selectedImageUri != null) {
-            savePhotoLocally(selectedImageUri, currentUser.getUid());
-        }
-
-        // Save nama & nim to Firestore
         Map<String, Object> updates = new HashMap<>();
         updates.put("nama", nama);
         updates.put("nim", nim);
+
+        if (selectedImageUri != null) {
+            String base64Image = ImageUtils.compressAndEncodeBase64(this, selectedImageUri);
+            if (base64Image != null) {
+                updates.put("photoBase64", base64Image);
+            }
+        }
 
         db.collection("users").document(currentUser.getUid())
                 .set(updates, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     pbEditProfile.setVisibility(View.GONE);
                     btnSaveProfile.setEnabled(true);
-                    Toast.makeText(this, "✅ Profil berhasil disimpan!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Profil berhasil disimpan!", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e -> {
@@ -152,25 +152,5 @@ public class EditProfileActivity extends AppCompatActivity {
                     btnSaveProfile.setEnabled(true);
                     Toast.makeText(this, "Gagal menyimpan: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
-    }
-
-    /**
-     * Save selected image URI to SharedPreferences (local, no cloud needed)
-     */
-    private void savePhotoLocally(Uri uri, String uid) {
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putString(KEY_PROFILE_PHOTO + uid, uri.toString()).apply();
-    }
-
-    /**
-     * Get locally saved photo URI string
-     */
-    public static String getLocalPhotoUri(Context context, String uid) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getString(KEY_PROFILE_PHOTO + uid, null);
-    }
-
-    private String getLocalPhotoUri(String uid) {
-        return getLocalPhotoUri(this, uid);
     }
 }
